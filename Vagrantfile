@@ -107,7 +107,7 @@ SCRIPT
 Vagrant.configure("2") do |config|
   config.ssh.forward_agent = true
 
-  simid = 1586577930
+  simid = 1586583683
 
   config.vm.provider "virtualbox" do |v|
     v.gui=false
@@ -339,6 +339,17 @@ echo "#### UDEV Rules (/etc/udev/rules.d/70-persistent-net.rules) ####"
 cat /etc/udev/rules.d/70-persistent-net.rules
 vagrant_interface_rule
 
+
+    # Ansible Playbook Configuration
+    device.vm.provision "ansible" do |ansible|
+          ansible.playbook = "playbooks/client1.yaml"
+          # ANSIBLE GROUPS CONFIGURATION
+          ansible.groups = {
+            "leaf" => ["leaf1",],
+            "host" => ["dhcp-server","client1","client2","client3",],
+            "network:children" => ["leaf",]
+          }
+    end
 
 
     # Run Any Platform Specific Code and Apply the interface Re-map
