@@ -1,0 +1,11 @@
+graph dc1 {
+ "leaf1" [function="leaf" os="CumulusCommunity/cumulus-vx" memory="768" config="./topology_converter/helper_scripts/extra_switch_config.sh"]
+ "dhcp-server" [function="host" os="ubuntu/xenial64" memory="512" config="./topology_converter/helper_scripts/extra_server_config.sh"]
+ "client1" [function="host" os="ubuntu/xenial64" memory="512" config="./topology_converter/helper_scripts/extra_server_config.sh"]
+ "client2" [function="host" os="ubuntu/xenial64" memory="512" config="./topology_converter/helper_scripts/extra_server_config.sh"]
+ "client3" [function="host" os="ubuntu/xenial64" memory="512" config="./topology_converter/helper_scripts/extra_server_config.sh"]
+   "dhcp-server":"eth1" -- "leaf1":"swp10"
+   "client1":"eth1" -- "leaf1":"swp11"
+   "client2":"eth1" -- "leaf1":"swp12"
+   "client3":"eth1" -- "leaf1":"swp13"
+}
