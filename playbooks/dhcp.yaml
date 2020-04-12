@@ -1,0 +1,14 @@
+---
+- hosts: client1
+  gather_facts: no
+  become: true
+
+  tasks:
+    - name: Install dhcp server.
+      apt:
+        name: isc-dhcp-server
+        state: present
+
+  roles:
+    - role: cumulus
+      tags: always

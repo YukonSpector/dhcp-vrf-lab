@@ -1,0 +1,8 @@
+---
+- hosts: leaf1
+  gather_facts: no
+  become: true
+
+  roles:
+    - role: cumulus
+      tags: always

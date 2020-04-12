@@ -1,0 +1,4 @@
+---
+- name: update hostname
+  hostname:
+    name: 'access-leaf1'

@@ -1,9 +1,9 @@
 graph dc1 {
- "leaf1" [function="leaf" os="CumulusCommunity/cumulus-vx" memory="768" config="./topology_converter/helper_scripts/extra_switch_config.sh"]
- "dhcp-server" [function="host" os="ubuntu/xenial64" memory="512" config="./topology_converter/helper_scripts/extra_server_config.sh"]
+ "leaf1" [function="leaf" os="CumulusCommunity/cumulus-vx" memory="768" config="./topology_converter/helper_scripts/extra_switch_config.sh" playbook="playbooks/leaf1.yaml"]
+ "dhcp-server" [function="host" os="ubuntu/xenial64" memory="512" config="./topology_converter/helper_scripts/extra_server_config.sh" playbook="playbooks/dhcp.yaml"]
  "client1" [function="host" os="ubuntu/xenial64" memory="512" config="./topology_converter/helper_scripts/extra_server_config.sh" playbook="playbooks/client1.yaml"]
- "client2" [function="host" os="ubuntu/xenial64" memory="512" config="./topology_converter/helper_scripts/extra_server_config.sh"]
- "client3" [function="host" os="ubuntu/xenial64" memory="512" config="./topology_converter/helper_scripts/extra_server_config.sh"]
+ "client2" [function="host" os="ubuntu/xenial64" memory="512" config="./topology_converter/helper_scripts/extra_server_config.sh" playbook="playbooks/client2.yaml"]
+ "client3" [function="host" os="ubuntu/xenial64" memory="512" config="./topology_converter/helper_scripts/extra_server_config.sh" playbook="playbooks/client3.yaml"]
    "dhcp-server":"eth0" -- "leaf1":"swp10"
    "client1":"eth0" -- "leaf1":"swp11"
    "client2":"eth0" -- "leaf1":"swp12"

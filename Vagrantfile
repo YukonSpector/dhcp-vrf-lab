@@ -107,7 +107,7 @@ SCRIPT
 Vagrant.configure("2") do |config|
   config.ssh.forward_agent = true
 
-  simid = 1586583683
+  simid = 1586678907
 
   config.vm.provider "virtualbox" do |v|
     v.gui=false
@@ -206,6 +206,17 @@ cat /etc/udev/rules.d/70-persistent-net.rules
 vagrant_interface_rule
 
 
+    # Ansible Playbook Configuration
+    device.vm.provision "ansible" do |ansible|
+          ansible.playbook = "playbooks/leaf1.yaml"
+          # ANSIBLE GROUPS CONFIGURATION
+          ansible.groups = {
+            "leaf" => ["leaf1",],
+            "host" => ["dhcp-server","client1","client2","client3",],
+            "network:children" => ["leaf",]
+          }
+    end
+
 
     # Run Any Platform Specific Code and Apply the interface Re-map
     #   (may or may not perform a reboot depending on platform)
@@ -272,6 +283,17 @@ echo "#### UDEV Rules (/etc/udev/rules.d/70-persistent-net.rules) ####"
 cat /etc/udev/rules.d/70-persistent-net.rules
 vagrant_interface_rule
 
+
+    # Ansible Playbook Configuration
+    device.vm.provision "ansible" do |ansible|
+          ansible.playbook = "playbooks/dhcp.yaml"
+          # ANSIBLE GROUPS CONFIGURATION
+          ansible.groups = {
+            "leaf" => ["leaf1",],
+            "host" => ["dhcp-server","client1","client2","client3",],
+            "network:children" => ["leaf",]
+          }
+    end
 
 
     # Run Any Platform Specific Code and Apply the interface Re-map
@@ -418,6 +440,17 @@ cat /etc/udev/rules.d/70-persistent-net.rules
 vagrant_interface_rule
 
 
+    # Ansible Playbook Configuration
+    device.vm.provision "ansible" do |ansible|
+          ansible.playbook = "playbooks/client2.yaml"
+          # ANSIBLE GROUPS CONFIGURATION
+          ansible.groups = {
+            "leaf" => ["leaf1",],
+            "host" => ["dhcp-server","client1","client2","client3",],
+            "network:children" => ["leaf",]
+          }
+    end
+
 
     # Run Any Platform Specific Code and Apply the interface Re-map
     #   (may or may not perform a reboot depending on platform)
@@ -484,6 +517,17 @@ echo "#### UDEV Rules (/etc/udev/rules.d/70-persistent-net.rules) ####"
 cat /etc/udev/rules.d/70-persistent-net.rules
 vagrant_interface_rule
 
+
+    # Ansible Playbook Configuration
+    device.vm.provision "ansible" do |ansible|
+          ansible.playbook = "playbooks/client3.yaml"
+          # ANSIBLE GROUPS CONFIGURATION
+          ansible.groups = {
+            "leaf" => ["leaf1",],
+            "host" => ["dhcp-server","client1","client2","client3",],
+            "network:children" => ["leaf",]
+          }
+    end
 
 
     # Run Any Platform Specific Code and Apply the interface Re-map
