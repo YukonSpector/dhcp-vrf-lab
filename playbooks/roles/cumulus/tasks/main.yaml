@@ -1,4 +1,7 @@
 ---
-- name: update hostname
-  hostname:
-    name: 'access-leaf1'
+- name: interfaces configuration
+  template:
+    src: interfaces.j2
+    dest: /etc/network/interfaces
+    backup: yes
+  notify: reload interfaces

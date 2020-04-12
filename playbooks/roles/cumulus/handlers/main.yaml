@@ -1,2 +1,3 @@
 ---
-#cumulus role default handlers main.yaml file
+- name: reload interfaces
+  command: ifreload -a

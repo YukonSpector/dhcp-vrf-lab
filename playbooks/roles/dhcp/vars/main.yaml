@@ -1,2 +1,6 @@
 ---
-#dhcp role default vars main.yaml file
+vlans:
+  - 110
+  - 111
+  - 112
+  - 113

@@ -3,3 +3,9 @@
   apt:
     name: isc-dhcp-server
     state: present
+
+- name: interfaces configuration
+  template:
+    src: eth.j2
+    dest: /etc/network/interfaces.d/eth0.{{ item }}.cfg
+  loop: "{{ vlans }}"
