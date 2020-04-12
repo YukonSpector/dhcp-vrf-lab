@@ -1,0 +1,5 @@
+---
+- name: Install dhcp server.
+  apt:
+    name: isc-dhcp-server
+    state: present
