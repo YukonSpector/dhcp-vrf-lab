@@ -1,0 +1,53 @@
+auto lo
+iface lo inet loopback
+
+auto swp10
+iface swp10
+
+auto swp11
+iface swp11
+    bridge-access 111
+
+auto swp12
+iface swp12
+    bridge-access 112
+
+auto swp13
+iface swp13
+    bridge-access 113
+
+auto bridge
+iface bridge
+    bridge-ports swp10 swp11 swp12 swp13
+    bridge-vids 110-113
+    bridge-vlan-aware yes
+
+auto vagrant
+iface vagrant inet dhcp
+
+auto eth0
+iface eth0 inet dhcp
+
+auto vlan110
+iface vlan110
+    address 192.168.110.1/24
+    vlan-id 110
+    vlan-raw-device bridge
+
+auto vlan111
+iface vlan111
+    address 192.168.111.1/24
+    vlan-id 111
+    vlan-raw-device bridge
+
+auto vlan112
+iface vlan112
+    address 192.168.112.1/24
+    vlan-id 112
+    vlan-raw-device bridge
+
+auto vlan113
+iface vlan113
+    address 192.168.113.1/24
+    vlan-id 113
+    vlan-raw-device bridge

@@ -1,0 +1,10 @@
+---
+- hosts: client3
+  gather_facts: no
+  become: true
+
+  tasks:
+    - name: Install ifupdown2.
+      apt:
+        name: ifupdown2
+        state: present

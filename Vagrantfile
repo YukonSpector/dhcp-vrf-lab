@@ -107,7 +107,7 @@ SCRIPT
 Vagrant.configure("2") do |config|
   config.ssh.forward_agent = true
 
-  simid = 1586569914
+  simid = 1586678907
 
   config.vm.provider "virtualbox" do |v|
     v.gui=false
@@ -138,16 +138,16 @@ Vagrant.configure("2") do |config|
       # link for eth0 --> NOTHING:NOTHING
       device.vm.network "private_network", virtualbox__intnet: "#{simid}_net6", auto_config: false , :mac => "443839000009"
       
-      # link for swp10 --> dhcp-server:eth1
+      # link for swp10 --> dhcp-server:eth0
       device.vm.network "private_network", virtualbox__intnet: "#{simid}_net1", auto_config: false , :mac => "443839000002"
       
-      # link for swp11 --> client1:eth1
+      # link for swp11 --> client1:eth0
       device.vm.network "private_network", virtualbox__intnet: "#{simid}_net2", auto_config: false , :mac => "443839000004"
       
-      # link for swp12 --> client2:eth1
+      # link for swp12 --> client2:eth0
       device.vm.network "private_network", virtualbox__intnet: "#{simid}_net3", auto_config: false , :mac => "443839000006"
       
-      # link for swp13 --> client3:eth1
+      # link for swp13 --> client3:eth0
       device.vm.network "private_network", virtualbox__intnet: "#{simid}_net4", auto_config: false , :mac => "443839000008"
       
 
@@ -206,6 +206,17 @@ cat /etc/udev/rules.d/70-persistent-net.rules
 vagrant_interface_rule
 
 
+    # Ansible Playbook Configuration
+    device.vm.provision "ansible" do |ansible|
+          ansible.playbook = "playbooks/leaf1.yaml"
+          # ANSIBLE GROUPS CONFIGURATION
+          ansible.groups = {
+            "leaf" => ["leaf1",],
+            "host" => ["dhcp-server","client1","client2","client3",],
+            "network:children" => ["leaf",]
+          }
+    end
+
 
     # Run Any Platform Specific Code and Apply the interface Re-map
     #   (may or may not perform a reboot depending on platform)
@@ -231,7 +242,7 @@ end
 
 
     # NETWORK INTERFACES
-      # link for eth1 --> leaf1:swp10
+      # link for eth0 --> leaf1:swp10
       device.vm.network "private_network", virtualbox__intnet: "#{simid}_net1", auto_config: false , :mac => "443839000001"
       
 
@@ -261,8 +272,8 @@ rm -rfv /etc/udev/rules.d/70-persistent-net.rules &> /dev/null
 delete_udev_directory
 
 device.vm.provision :shell , :inline => <<-udev_rule
-echo "  INFO: Adding UDEV Rule: 44:38:39:00:00:01 --> eth1"
-echo 'ACTION=="add", SUBSYSTEM=="net", ATTR{address}=="44:38:39:00:00:01", NAME="eth1", SUBSYSTEMS=="pci"' >> /etc/udev/rules.d/70-persistent-net.rules
+echo "  INFO: Adding UDEV Rule: 44:38:39:00:00:01 --> eth0"
+echo 'ACTION=="add", SUBSYSTEM=="net", ATTR{address}=="44:38:39:00:00:01", NAME="eth0", SUBSYSTEMS=="pci"' >> /etc/udev/rules.d/70-persistent-net.rules
 udev_rule
      
       device.vm.provision :shell , :inline => <<-vagrant_interface_rule
@@ -272,6 +283,17 @@ echo "#### UDEV Rules (/etc/udev/rules.d/70-persistent-net.rules) ####"
 cat /etc/udev/rules.d/70-persistent-net.rules
 vagrant_interface_rule
 
+
+    # Ansible Playbook Configuration
+    device.vm.provision "ansible" do |ansible|
+          ansible.playbook = "playbooks/dhcp.yaml"
+          # ANSIBLE GROUPS CONFIGURATION
+          ansible.groups = {
+            "leaf" => ["leaf1",],
+            "host" => ["dhcp-server","client1","client2","client3",],
+            "network:children" => ["leaf",]
+          }
+    end
 
 
     # Run Any Platform Specific Code and Apply the interface Re-map
@@ -298,7 +320,7 @@ end
 
 
     # NETWORK INTERFACES
-      # link for eth1 --> leaf1:swp11
+      # link for eth0 --> leaf1:swp11
       device.vm.network "private_network", virtualbox__intnet: "#{simid}_net2", auto_config: false , :mac => "443839000003"
       
 
@@ -328,8 +350,8 @@ rm -rfv /etc/udev/rules.d/70-persistent-net.rules &> /dev/null
 delete_udev_directory
 
 device.vm.provision :shell , :inline => <<-udev_rule
-echo "  INFO: Adding UDEV Rule: 44:38:39:00:00:03 --> eth1"
-echo 'ACTION=="add", SUBSYSTEM=="net", ATTR{address}=="44:38:39:00:00:03", NAME="eth1", SUBSYSTEMS=="pci"' >> /etc/udev/rules.d/70-persistent-net.rules
+echo "  INFO: Adding UDEV Rule: 44:38:39:00:00:03 --> eth0"
+echo 'ACTION=="add", SUBSYSTEM=="net", ATTR{address}=="44:38:39:00:00:03", NAME="eth0", SUBSYSTEMS=="pci"' >> /etc/udev/rules.d/70-persistent-net.rules
 udev_rule
      
       device.vm.provision :shell , :inline => <<-vagrant_interface_rule
@@ -339,6 +361,17 @@ echo "#### UDEV Rules (/etc/udev/rules.d/70-persistent-net.rules) ####"
 cat /etc/udev/rules.d/70-persistent-net.rules
 vagrant_interface_rule
 
+
+    # Ansible Playbook Configuration
+    device.vm.provision "ansible" do |ansible|
+          ansible.playbook = "playbooks/client1.yaml"
+          # ANSIBLE GROUPS CONFIGURATION
+          ansible.groups = {
+            "leaf" => ["leaf1",],
+            "host" => ["dhcp-server","client1","client2","client3",],
+            "network:children" => ["leaf",]
+          }
+    end
 
 
     # Run Any Platform Specific Code and Apply the interface Re-map
@@ -365,7 +398,7 @@ end
 
 
     # NETWORK INTERFACES
-      # link for eth1 --> leaf1:swp12
+      # link for eth0 --> leaf1:swp12
       device.vm.network "private_network", virtualbox__intnet: "#{simid}_net3", auto_config: false , :mac => "443839000005"
       
 
@@ -395,8 +428,8 @@ rm -rfv /etc/udev/rules.d/70-persistent-net.rules &> /dev/null
 delete_udev_directory
 
 device.vm.provision :shell , :inline => <<-udev_rule
-echo "  INFO: Adding UDEV Rule: 44:38:39:00:00:05 --> eth1"
-echo 'ACTION=="add", SUBSYSTEM=="net", ATTR{address}=="44:38:39:00:00:05", NAME="eth1", SUBSYSTEMS=="pci"' >> /etc/udev/rules.d/70-persistent-net.rules
+echo "  INFO: Adding UDEV Rule: 44:38:39:00:00:05 --> eth0"
+echo 'ACTION=="add", SUBSYSTEM=="net", ATTR{address}=="44:38:39:00:00:05", NAME="eth0", SUBSYSTEMS=="pci"' >> /etc/udev/rules.d/70-persistent-net.rules
 udev_rule
      
       device.vm.provision :shell , :inline => <<-vagrant_interface_rule
@@ -406,6 +439,17 @@ echo "#### UDEV Rules (/etc/udev/rules.d/70-persistent-net.rules) ####"
 cat /etc/udev/rules.d/70-persistent-net.rules
 vagrant_interface_rule
 
+
+    # Ansible Playbook Configuration
+    device.vm.provision "ansible" do |ansible|
+          ansible.playbook = "playbooks/client2.yaml"
+          # ANSIBLE GROUPS CONFIGURATION
+          ansible.groups = {
+            "leaf" => ["leaf1",],
+            "host" => ["dhcp-server","client1","client2","client3",],
+            "network:children" => ["leaf",]
+          }
+    end
 
 
     # Run Any Platform Specific Code and Apply the interface Re-map
@@ -432,7 +476,7 @@ end
 
 
     # NETWORK INTERFACES
-      # link for eth1 --> leaf1:swp13
+      # link for eth0 --> leaf1:swp13
       device.vm.network "private_network", virtualbox__intnet: "#{simid}_net4", auto_config: false , :mac => "443839000007"
       
 
@@ -462,8 +506,8 @@ rm -rfv /etc/udev/rules.d/70-persistent-net.rules &> /dev/null
 delete_udev_directory
 
 device.vm.provision :shell , :inline => <<-udev_rule
-echo "  INFO: Adding UDEV Rule: 44:38:39:00:00:07 --> eth1"
-echo 'ACTION=="add", SUBSYSTEM=="net", ATTR{address}=="44:38:39:00:00:07", NAME="eth1", SUBSYSTEMS=="pci"' >> /etc/udev/rules.d/70-persistent-net.rules
+echo "  INFO: Adding UDEV Rule: 44:38:39:00:00:07 --> eth0"
+echo 'ACTION=="add", SUBSYSTEM=="net", ATTR{address}=="44:38:39:00:00:07", NAME="eth0", SUBSYSTEMS=="pci"' >> /etc/udev/rules.d/70-persistent-net.rules
 udev_rule
      
       device.vm.provision :shell , :inline => <<-vagrant_interface_rule
@@ -473,6 +517,17 @@ echo "#### UDEV Rules (/etc/udev/rules.d/70-persistent-net.rules) ####"
 cat /etc/udev/rules.d/70-persistent-net.rules
 vagrant_interface_rule
 
+
+    # Ansible Playbook Configuration
+    device.vm.provision "ansible" do |ansible|
+          ansible.playbook = "playbooks/client3.yaml"
+          # ANSIBLE GROUPS CONFIGURATION
+          ansible.groups = {
+            "leaf" => ["leaf1",],
+            "host" => ["dhcp-server","client1","client2","client3",],
+            "network:children" => ["leaf",]
+          }
+    end
 
 
     # Run Any Platform Specific Code and Apply the interface Re-map
